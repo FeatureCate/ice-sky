@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="app">
+            <!-- v-bind绑定 -->
+            <cpn1 :titles="title"></cpn1>
+        </div>
+        
+        <template id="cpn">
+            <div>{{titles}}</div>
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    </body>
+    <script>           
+        const cpn1 = {
+            template: "#cpn",
+            props: //props获取
+            //1 ["titles"]
+            //2 {titles: String,//变量和指定类型}
+            //3
+            {
+                titles: {
+                    type: String,
+                    default: '默认值',
+                    //当‘对象或数组’时需要是一个函数
+                    //default() {   
+                    //     return [xxx] 或者 {xxx:xxx}   
+                    // },
+                    required: true,//意味着这个变量是必须传的
+                    validator(value) {
+                        return ['aaa','bbb','eee'].indexOf(value) != -1//传入的值必须是前面数组中的一个
+                    }
+                }
+            }
+            ,
+            data() {
+                return{}
+            }
+        }
+
+        const app = new Vue({
+            el: "#app",
+            data: {
+                title: 'eee',//父组件的数据
+            },
+            components: {
+            cpn1
+            }
+        })
+        
+    </script>
+</html>

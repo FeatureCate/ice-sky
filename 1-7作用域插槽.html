@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+
+        <!-- 作用域插槽：即父作用域获取子组件内部数据并使用 -->
+
+        <div id="app">
+            <cpn1></cpn1>
+
+            <cpn1>
+                <template slot-scope="slot">
+                    <span v-for="item in slot.datas">{{item}}-</span>
+                </template>
+            </cpn1>
+
+            <cpn1>
+                <!-- 通过slot-scope获取slot，进而调用内部数据 -->
+                <template slot-scope="slot">
+                    <span>{{slot.datas.join('-')}}</span>
+                </template>
+            </cpn1>
+        </div>
+
+        <template id="cpn">
+            <div>
+                <!-- 绑定组件内的数据，‘datas’是自定义命名 -->
+                <slot :datas="list">
+                    <ul>
+                        <li v-for="item in list">{{item}}</li>
+                    </ul>
+                </slot>
+            </div>
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    </body>
+    <script>           
+        const cpn1 = {
+            template: "#cpn",
+            props: {},
+            data() {return{
+                list: ['aaa','bbb','ccc','ddd','eeee'],
+                lists: ['baaa','bbb','ccc','ddd','eeee'],
+            }},
+            methods: {}
+        }
+
+        const app = new Vue({
+            el: "#app",
+            data: {},
+            components: {
+                cpn1
+            },
+            methods: {},
+        })
+        
+    </script>
+</html>

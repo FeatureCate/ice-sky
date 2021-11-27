@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="app">
+            <!-- ref命名 -->
+            <cpn1 ref="aaa"></cpn1>
+            <cpn1></cpn1>
+            <button @click="btn">父访问子</button>
+        </div>
+
+        <template id="cpn">
+            <div>
+                vue子组件
+            <button @click="btnc">子访问父</button> 
+            </div>
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    </body>
+    <script>           
+        const cpn1 = {
+            template: "#cpn",
+            props: {}
+            ,
+            data() {
+                return{
+                    name: 'eee',
+                }
+            },
+            methods: {
+                names() {
+                    console.log('ccc');
+                },
+                // 子访问父
+                btnc() {
+                    // 方法一；只能访问到上一级
+                    console.log(this.$parent.nameparents);
+
+                    // 方法二：访问root根元素,访问到最上层
+                    console.log(this.$root.nameparentsroot);
+                }
+            }
+        }
+
+        const app = new Vue({
+            el: "#app",
+            data: {
+                nameparents: 'parent',
+                nameparentsroot: 'root',
+            },
+            components: {
+            cpn1
+            },
+            methods: {
+                // 父访问子
+                btn() {
+                //    方法1：下标是不稳定的（缺点）
+                   console.log(this.$children[0].name);
+
+                //    方法2：需要在对应的调用地点命名ref
+                   console.log(this.$refs.aaa.name);
+                   this.$refs.aaa.names();
+               }
+            }
+        })
+        
+    </script>
+</html>

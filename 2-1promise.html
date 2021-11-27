@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //封装异步操作
+
+        //传入一个函数(resolve,reject)
+        //resolve和reject又是一个函数
+        //链式编程
+        //成功时调用resolve
+        //失败时调用reject，可选参数
+
+        // 1：基础语法
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve()//一旦调用就会进入then中
+            },1000)
+        }).then(()=>{
+            console.log('vue');
+
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve()
+                },1000)  
+            })
+        }).then(()=>{
+            console.log('vue and me'); 
+        })    
+        // 2：带入参数
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                resolve('hello world')
+            })
+        }).then((data)=>{//data是resolve函数传入的数据
+            console.log(data);
+        })
+        // 3：失败时
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                reject('error')//一旦调用就会进入catch中
+            })
+        }).catch((err)=>{
+            console.log(err);
+        })
+        // 4：特别的写法
+        new Promise((resolve,reject)=>{
+            setTimeout(()=>{
+                // resolve('hello world')
+                reject('error')//一旦调用就会进入then的第二个函数中
+            })
+        }).then((data)=>{
+            console.log(data);
+        },err => {
+            console.log(err);
+        })
+        // 5：省略new Promise
+        // 成功时~1
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('aaa')
+                },1000)
+            }).then((data)=>{
+                //自己处理代码后return代码
+                return new Promise((resolve)=>{
+                    resolve(data+'bbb')
+                })
+            }).then((data)=>{
+                //自己处理代码后输出结果
+                console.log(data); 
+            })    
+        //  ~2
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('aaa')
+                },1000)
+            }).then((data)=>{
+                //自己处理代码后return代码
+                return Promise.resolve(data+'bbb')
+            }).then((data)=>{
+                //自己处理代码后输出结果
+                console.log(data); 
+            })    
+        // ~3
+           new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('aaa')
+                },1000)
+            }).then((data)=>{
+                //自己处理代码后return代码
+                return data+'bbb'
+            }).then((data)=>{
+                //自己处理代码后输出结果
+                console.log(data); 
+            })    
+        //包含失败~2
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('aaa')
+                },1000)
+            }).then((data)=>{
+                //自己处理代码后return代码
+                return Promise.reject('error【包含失败~2】')
+            }).then((data)=>{
+                //自己处理代码后输出结果
+                console.log(data); 
+            }).catch((err)=>{
+                console.log(err);
+            })  
+        //包含失败~3
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('aaa')
+                },1000)
+            }).then((data)=>{
+                //自己处理代码后return代码
+                throw '抛出异常【包含失败~3】'
+            }).then((data)=>{
+                //自己处理代码后输出结果
+                console.log(data); 
+            }).catch((err)=>{
+                console.log(err);
+            })   
+
+        //6：同时满足2个异步才进入下一步
+        // Promise.all([
+        //     new Promise((resolve,reject)=>{
+        //         $ajax({
+        //             url: 'url1',
+        //             success: function(data) {
+        //                 resolve(data)
+        //             }
+        //         })
+        //     }),
+        //     new Promise((resolve,reject)=>{
+        //         $ajax({
+        //             url: 'url2',
+        //             success: function(data) {
+        //                 resolve(data)
+        //             }
+        //         })
+        //     })
+        // ]).then((results)=>{
+        //     //results以数组的方式包含了上面的结果
+        //     results[0];
+        //     results[1];
+        // })
+        //模拟
+        Promise.all([
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('结果1')
+                },1000)
+            }),
+            new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    resolve('结果2')
+                },3000)
+            })
+        ]).then((results)=>{
+            console.log(results);
+        })
+
+    </script>
+</body>
+</html>

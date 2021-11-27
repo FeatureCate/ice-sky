@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+
+        <!-- 
+        1：插槽可以有默认值
+        2：如果有多个元素，可以同时放入替换 
+        3: 具名插槽slot内部定义name，使用时slot="name"进行对应替换
+        -->
+
+        <div id="app">
+            <cpn1><button>aaa</button></cpn1>
+            <cpn1></cpn1>
+            <cpn1>
+                <span>元素1</span>
+                <span>元素2</span>
+            </cpn1>
+            <cpn1>
+                <p slot="special">替换了</p>
+            </cpn1>
+        </div>
+
+        <template id="cpn">
+            <div style="float: left;margin-right: 70px;">
+                <p>slot</p>
+                <slot><p>默认值</p></slot>
+                <slot name="special"><p>具名插槽</p></slot>
+            </div>
+        </template>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    </body>
+    <script>           
+        const cpn1 = {
+            template: "#cpn",
+            props: {},
+            data() {return{}},
+            methods: {}
+        }
+
+        const app = new Vue({
+            el: "#app",
+            data: {},
+            components: {
+                cpn1
+            },
+            methods: {},
+        })
+        
+    </script>
+</html>

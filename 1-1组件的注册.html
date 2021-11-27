@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <div id="app">
+            {{titles}}
+            <cpn2></cpn2>
+            <cpn3></cpn3>
+            <cpn5></cpn5>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    </body>
+    <script>           
+        const cpnC1 = Vue.extend({
+            template: `
+            <div>
+                <p>vue and me!</p>
+            </div> 
+            `
+        })
+
+        const cpnC2 = Vue.extend({
+            template: `
+                <div>
+                    <p>who are you?</p>
+                    <cpn1></cpn1>
+                </div>
+            `,
+            components: {
+                cpn1: cpnC1,
+            }
+        })
+
+        // Vue.component('cpn2',cpnC2);     
+
+        //语法糖，全局注册组件
+        Vue.component('cpn5',{
+            template: `
+            <div>
+                <p>vue and mes!</p>
+            </div> 
+            `
+        });     
+
+        const app = new Vue({
+            el: "#app",
+            data: {
+                titles: 'eee',
+            },
+            components: {
+            cpn2: cpnC2,
+            //语法糖，局部注册组件
+            cpn3: {
+                    template: `
+                    <div>
+                        <p>{{title}}</p>
+                    </div> 
+                    `,
+                    data() {
+                        return {
+                            title: 'vue!',
+                        }
+                    }
+                },
+            }
+        })
+        
+    </script>
+</html>
